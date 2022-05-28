@@ -1,0 +1,27 @@
+.navigate
+    display: flex
+    justify-content: center
+    align-items: center
+ul
+    display: flex
+    justify-content: space-around
+    list-style: none
+    border: 1px solid blue
+    gap: 2rem
+    padding: 1rem 2rem
+    li
+        border-right: 1px solid blue
+        &:last-child
+            border: none
+        a
+            text-decoration: none
+            margin-right: 1rem
+        &:hover
+            transform: scale(1.2)
+            transition: all 1s ease-in-out
+
+        &:last-child
+            margin-right: none
+
+.active
+    color: orange
