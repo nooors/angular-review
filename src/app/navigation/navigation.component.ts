@@ -12,6 +12,16 @@ import { Component, OnInit } from "@angular/core";
         <li><a routerLink="/dice" routerLinkActive="active">Dice</a></li>
         <li><a routerLink="/phrase" routerLinkActive="active">Sentence</a></li>
         <li><a routerLink="/country" routerLinkActive="active">Country</a></li>
+        <li>
+          <a routerLink="/form-example" routerLinkActive="active"
+            >FormExample</a
+          >
+        </li>
+        <li>
+          <a routerLink="/form-exercise" routerLinkActive="active"
+            >FormExercise</a
+          >
+        </li>
       </ul>
     </nav>
   `,

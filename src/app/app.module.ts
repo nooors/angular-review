@@ -14,6 +14,9 @@ import { HomeComponent } from "./home/home.component";
 import { CountriesComponentComponent } from "./countries-component/countries-component.component";
 import { HttpClientModule } from "@angular/common/http";
 import { FormsModule } from "@angular/forms";
+import { ReactiveFormsModule } from "@angular/forms";
+import { ExampleReactiveFormComponent } from './example-reactive-form/example-reactive-form.component';
+import { FormExerciciComponent } from './form-exercici/form-exercici.component';
 
 @NgModule({
   declarations: [
@@ -27,8 +30,16 @@ import { FormsModule } from "@angular/forms";
     NotFoundComponent,
     HomeComponent,
     CountriesComponentComponent,
+    ExampleReactiveFormComponent,
+    FormExerciciComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })

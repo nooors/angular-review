@@ -27,7 +27,7 @@ import { EMPTY, Observable } from "rxjs";
 
       <!-- async pipes works with promises observables and handles susbscription/unsubscription -->
       <!-- <div class="capital">{{ capital }}</div> -->
-      <div class="capital">{{ capital$ | async }}</div>
+      <div class="capital">{{ capital$ | async | json }}</div>
       <!-- Best practice |^ -->
     </div>
   `,
