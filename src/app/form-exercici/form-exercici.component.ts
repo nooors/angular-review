@@ -7,7 +7,10 @@ import {
 } from "@angular/forms";
 import { Observable } from "rxjs";
 import { customAllowedNameValidator } from "../example-reactive-form/custom-forbidden-name.validator";
-import { createDate } from "../utilities/utilities";
+import { calculateAge, createDate } from "../utilities/utilities";
+import { validDNIValidator } from "../custom-validators/validDNI.validator";
+import { legalAgeValidator } from "../custom-validators/legalAge.validator";
+import { isCandidateForPermanentDNI } from "../utilities/utilities";
 
 @Component({
   selector: "app-form-exercici",
@@ -38,14 +41,53 @@ import { createDate } from "../utilities/utilities";
           <input type="text" name="Age" id="Age" formControlName="age" />
         </div>
         <div class="input-group">
-          <label for="DniExpiry">DNI Expiry Date</label>
+          <label *ngIf="!isCandidateForPermanentDNI" for="DNIExpiryDate "
+            >DNI Expiry Date</label
+          >
           <input
-            type="text"
-            name="DniExpiry"
-            id="DniExpiry"
+            *ngIf="!isCandidateForPermanentDNI"
+            id="DNIExpiryDate"
+            name="DNIExpiryDate"
             formControlName="dniExpiry"
-            placeholder="dd/mm/yyyy"
           />
+        </div>
+        <div class="input-group">
+          <label *ngIf="isCandidateForPermanentDNI" for="PermanentDNI "
+            >Permanent DNI</label
+          >
+          <input
+            *ngIf="isCandidateForPermanentDNI"
+            type="checkbox"
+            id="PermanentDNI"
+            name="PermanentDNI"
+            formControlName="permanentdni"
+          />
+        </div>
+        <fieldset formGroupName="address">
+          <div class="input-group">
+            <label for="Street">Street</label>
+            <input id="Street" name="Street" formControlName="street" />
+          </div>
+
+          <div class="input-group">
+            <label for="City">City</label>
+            <input id="City" name="City" formControlName="city" />
+          </div>
+
+          <div class="input-group">
+            <label for="Postalcode">Postal Code</label>
+            <input
+              id="Postalcode"
+              name="Postalcode"
+              formControlName="postalcode"
+            />
+          </div>
+        </fieldset>
+        <div>
+          <button [disabled]="formExercici.invalid" (click)="log()">
+            Submit
+          </button>
+          <button (click)="clear()">Clear</button>
         </div>
       </form>
       <div class="display">
@@ -61,18 +103,55 @@ import { createDate } from "../utilities/utilities";
   styleUrls: ["./form-exercici.component.sass"],
 })
 export class FormExerciciComponent implements OnInit {
-  formExercici: FormGroup = this.formDeploy.group({
-    name: [
-      "",
-      [Validators.required, customAllowedNameValidator(/^[A-Za-z]+$/)],
-    ],
-    email: ["", [customAllowedNameValidator(/[.*][@caser.com]/)]],
-    birthDate: [""],
-    age: [""],
-    dniExpiry: [""],
-  });
-
   constructor(private formDeploy: FormBuilder) {}
 
-  ngOnInit(): void {}
+  isCandidateForPermanentDNI = false;
+
+  formExercici!: FormGroup;
+  formAddress!: FormGroup;
+
+  ngOnInit(): void {
+    // form
+    this.formExercici = this.formDeploy.group({
+      name: [
+        "",
+        [Validators.required, customAllowedNameValidator(/^[A-Za-z ]*$/)],
+      ],
+      email: ["", [Validators.pattern(/@caser.com$/)]],
+      age: [],
+      dniExpiry: [, validDNIValidator()],
+      birthDate: [, legalAgeValidator()],
+      address: this._addressFormBuilder(),
+    });
+    // age logic
+    const ageControl = this.formExercici.get("age");
+    ageControl?.disable();
+    this.formExercici
+      .get("birthDate")
+      ?.valueChanges.subscribe((birthDateSring) => {
+        const birthDate = createDate(birthDateSring);
+        ageControl?.setValue(calculateAge(birthDate));
+
+        // permanent DNI logic
+        if (isCandidateForPermanentDNI(birthDate)) {
+          this.formExercici.removeControl("dn");
+        }
+      });
+  }
+
+  private _addressFormBuilder(): FormGroup {
+    return (this.formAddress = this.formDeploy.group({
+      street: [],
+      city: [],
+      postalcode: [],
+    }));
+  }
+  clear() {
+    this.formExercici.reset();
+  }
+
+  log() {
+    console.log(this.formExercici.value);
+  }
 }
+// note: Validators.pattern takes a string or a regex
