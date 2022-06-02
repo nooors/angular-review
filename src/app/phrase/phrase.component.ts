@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PhraseService } from '../sevices/phrase.service';
+import { PhraseService } from '../services/phrase.service';
 
 @Component({
   selector: 'app-phrase',

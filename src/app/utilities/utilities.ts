@@ -1,3 +1,6 @@
+// in this training exercise will use spanish format
+// in projects internalization must be handled
+
 export function createDate(dateString: string) {
   const day = Number(dateString.slice(0, 2));
   const month = Number(dateString.slice(3, 5)) - 1; //january is month 0
@@ -22,4 +25,9 @@ export function calculateAge(birthDate: Date) {
     age--;
   }
   return age;
+}
+
+export function isCandidateForPermanentDNI(birthDate: Date) {
+  const minummAgePermanentDNI = 70;
+  return calculateAge(birthDate) >= minummAgePermanentDNI;
 }
