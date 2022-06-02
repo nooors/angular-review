@@ -1,7 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input } from "@angular/core";
 
 @Component({
-  selector: 'app-table-duty',
+  selector: "app-table-duty",
   template: `
     <div class="table">
       <table>
@@ -10,21 +10,21 @@ import { Component, OnInit, Input } from '@angular/core';
           <th>On Duty?</th>
         </thead>
         <tr *ngFor="let item of heroes">
-        <td>{{ item.heroe }}</td>
-        <td [ngClass]="{task: false}">{{ item.duty ? 'On Duty' : 'Available' }}</td>
+          <td>{{ item.heroe }}</td>
+          <td [ngClass]="available ? 'task' : 'is-available'">
+            {{ item.duty ? "On Duty" : "Available" }}
+          </td>
         </tr>
       </table>
     </div>
   `,
-  styleUrls: ['./table-duty.component.sass']
+  styleUrls: ["./table-duty.component.sass"],
 })
 export class TableDutyComponent implements OnInit {
-@Input() heroes !: any;
-@Input() task!: object;
+  @Input() heroes!: any;
+  @Input() available!: boolean;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }
